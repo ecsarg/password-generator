@@ -1,71 +1,66 @@
-var lowerCase = "abcdefghijklmnopqrstuvwxyz";
-var upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-var numbers = "0123456789";
-var characters = "!@#$%^&*()_-+="
+// generate button
+var generateBtn = document.querySelector("#generate");
+generateBtn.addEventListener("click", writePassword);
 
-function generatePassword() {
-  var length = prompt("Please choose a password between 8 and 128 characters.");
-    while (isNaN(length) || length < 8 || length > 128 || length === null) {
+// variables for arrays
+var lowerCase = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+var upperCase = ['A', 'B' ,'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+var numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+var special = ['@', '%', '+', '!', '#', '$', '^', '&', '*', '(', ')', '-', '_', '`', '~'];
+
+var pwLength = pwLength;
+var confirmLowerCase = lowerCase;
+var confirmUpperCase = upperCase;
+var confirmNumbers = numbers;
+var confirmSpecial = special;
+
+// generatePassword function begins
+function generatePassword () {
+  var possibleChoices = [];
+  var password = "";
+
+// prompts begin
+  var pwLength = prompt("Please choose a password between 8 and 128 characters.");
+  if (pwLength < 8 || pwLength > 128 || pwLength === null || isNaN(pwLength)) {
+    var pwLength = prompt(
+      "Please choose a password between 8 and 128 characters."
+    );
+    return generatePassword();
+  }
+  
+  // confirm variables with code to process arrays to possibleChoices var
+  else {
+    if (confirm("Click OK if you would like to include lowercase letters.")) {
+      Array.prototype.push.apply(possibleChoices, lowerCase);
+    }
+    if (confirm("Click OK if you would like to include uppercase letters.")) {
+      Array.prototype.push.apply(possibleChoices, upperCase);
+    }
+    if (confirm("Click OK if you would like to include numbers.")) {
+      Array.prototype.push.apply(possibleChoices, numbers);
+    }
+    if (confirm("Click OK if you would like to include special characters.")) {
+      Array.prototype.push.apply(possibleChoices, special);
+    }
+    if (possibleChoices.length === 0) {
+      alert("You must select at least one character type for your password.");
       return generatePassword();
     }
-    if (length >= 8 || length <= 128) {
-      
-      var lowerCase = prompt("Would you like to include lowercase letters? Type 'YES' or 'NO'.");
-        if (lowerCase === 'YES' || lowerCase === 'yes' || lowerCase === 'NO' || lowerCase === 'no') {
-        lowerCase = true;
-        }
-        else if (lowerCase = "" || lowerCase === null) {
-        lowerCase = false;
-        }
-  
-      var upperCase = prompt("Would you like to include uppercase letters? Type 'YES' or 'NO'.");
-        if (upperCase === 'YES' || upperCase === 'yes' || upperCase === 'NO' || upperCase === 'no') {
-          upperCase = true;
-        }
-        else if (upperCase = "" || upperCase === null) {
-          upperCase = false;
-          }
 
-      var numbers = prompt("Would you like to include numbers? Type 'YES' or 'NO'.");
-        if (numbers === 'YES' || numbers === 'yes' || numbers === 'NO' || numbers === 'no') {
-          numbers = true;
-        }
-        else if (numbers = "" || numbers === null) {
-          numbers = false;
-          }
-
-      var characters = prompt("Would you like to include numbers? Type 'YES' or 'NO'.");
-        if (characters === 'YES' || characters === 'yes' || characters === 'NO' || characters === 'no') {
-          numbers = true;
-        }
-        else if (characters = "" || characters === null) {
-          characters = false;
-          }
+    // use randomizer to create password
+    else {
+      for (var i = 0; i < pwLength; i++) {
+        var randomPassword = Math.floor(Math.random() * possibleChoices.length);
+        password += possibleChoices[randomPassword];
       }
-    if (lowerCase === false && upperCase === false && numbers === false && characters === false) {
-        alert("You must select at least one character type.");
     }
-    
-  
   }
+ 
+  // paste created password into HTML
+  var passwordText = document.querySelector("#password");
+  passwordText.value = password
+};
 
-
-
-
-
-
-
-// Get references to the #generate element
-var generateBtn = document.querySelector("#generate");
-
-// Write password to the #password input
 function writePassword() {
   var password = generatePassword();
-  var passwordText = document.querySelector("#password");
-
-  passwordText.value = password;
-
-}
-
-// Add event listener to generate button
-generateBtn.addEventListener("click", writePassword);
+};
